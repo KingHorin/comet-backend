@@ -9,25 +9,6 @@ import (
 
 func UpdateAddress() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		username, token := c.Query("username"), c.Query("token")
-		name, phone := c.Query("name"), c.Query("phone")
-		area, address, company := c.Query("area"), c.Query("address"), c.Query("company")
-		token += "1"
-		db := pkg.GetDB()
-		u := model.User{}
-		if db.Model(&u).Where("username= ?", username).Take(&u).RowsAffected == 0 {
-			c.JSON(400, "用户名不存在")
-		} else {
-			c.JSON(200, "地址创建成功")
-			db.Delete(&model.UserAddress{}, u.Id)
-			db.Model(&model.UserAddress{}).Create(&model.UserAddress{
-				Id: u.Id, Name: name, Area: area, Address: address, Company: company, Phone: phone})
-		}
-	}
-}
-
-func UpdateAddressJSON() gin.HandlerFunc {
-	return func(c *gin.Context) {
 		type addressReq struct {
 			Username string `json:"username"`
 			Token    string `json:"token"`
@@ -39,12 +20,13 @@ func UpdateAddressJSON() gin.HandlerFunc {
 		}
 		r := addressReq{}
 		c.BindJSON(&r)
-		valid, user := ValidateUser(r.Username)
-		db := pkg.GetDB()
-		if !valid {
-			c.JSON(400, "用户名不存在")
+		if !ValidateUser(c, r.Username) {
+			c.JSON(200, gin.H{"code": 0, "msg": "用户token不匹配"})
 		} else {
-			c.JSON(200, "地址创建成功")
+			c.JSON(200, gin.H{"code": 1, "msg": "地址创建成功"})
+			db := pkg.GetDB()
+			user := model.User{}
+			db.Where("username = ?", r.Username).Take(&user)
 			db.Delete(&model.UserAddress{}, user.Id)
 			db.Create(&model.UserAddress{Id: user.Id, Name: r.Name, Area: r.Area, Address: r.Address, Company: r.Company, Phone: r.Phone})
 		}
@@ -75,18 +57,16 @@ func SubmitOrder() gin.HandlerFunc {
 		//	fmt.Println(itemArr[i].Price)
 		//	fmt.Println(itemArr[i].Count)
 		//}
-		valid, _ := ValidateUser(r.Username)
-		if !valid {
-			c.JSON(400, "用户名不存在")
-		} else {
-			c.JSON(200, "提交成功，具体功能开发中")
+		if !ValidateUser(c, r.Username) {
+			c.JSON(200, gin.H{"code": 0, "msg": "用户token不匹配"})
+			return
 		}
-
+		c.JSON(200, gin.H{"code": 1, "msg": "提交成功，具体功能开发中"})
 	}
 }
 
 func GetPayStatus() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.JSON(200, "请求已接收，具体功能开发中")
+		c.JSON(200, gin.H{"code": 0, "msg": "请求已接收，具体功能开发中"})
 	}
 }

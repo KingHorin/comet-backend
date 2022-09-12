@@ -6,8 +6,6 @@ type User struct {
 	Password string `gorm:"type:varchar(20);not null;"`
 	Phone    string `gorm:"type:varchar(20)"`
 	Email    string `gorm:"type:varchar(50)"`
-	Token    string `gorm:"type:varchar(50)"`
-	Online   int32  `gorm:"type:int"`
 }
 
 func (User) TableName() string {
