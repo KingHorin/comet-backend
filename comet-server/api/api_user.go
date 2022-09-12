@@ -15,7 +15,7 @@ func ValidateUser(c *gin.Context, username string) bool {
 	return utils.ToString(tokenUsername) == username
 }
 
-func LoginJSON() gin.HandlerFunc {
+func Login() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		type loginReq struct {
 			Username string `json:"username"`
@@ -40,7 +40,7 @@ func LoginJSON() gin.HandlerFunc {
 	}
 }
 
-func RegisterJSON() gin.HandlerFunc {
+func Register() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		type registerReq struct {
 			Username string `json:"username"`
@@ -60,7 +60,7 @@ func RegisterJSON() gin.HandlerFunc {
 	}
 }
 
-func UpdatePhoneJSON() gin.HandlerFunc {
+func UpdatePhone() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		type phoneReq struct {
 			Username string `json:"username"`
@@ -87,7 +87,7 @@ func UpdatePhoneJSON() gin.HandlerFunc {
 	}
 }
 
-func UpdateEmailJSON() gin.HandlerFunc {
+func UpdateEmail() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		type emailReq struct {
 			Username string `json:"username"`

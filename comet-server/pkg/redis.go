@@ -18,6 +18,8 @@ func init() {
 		panic("redis连接失败, " + err.Error())
 	}
 
+	rd.FlushDB() //每次清空所有token和黑名单记录
+
 }
 
 func GetRD() *redis.Client {

@@ -16,18 +16,18 @@ func init() {
 	password := "root"  //密码
 	host := "127.0.0.1" //数据库地址，可以是ip或者域名
 	port := 3306        //数据库端口
-	Dbname := "comet"   //数据库名
+	dbname := "comet"   //数据库名
 	timeout := "10s"    //连接超时，10秒
 
 	lnk := fmt.Sprintf("%s:%s@tcp(%s:%d)/", username, password, host, port)
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local&timeout=%s", username, password, host, port, Dbname, timeout)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local&timeout=%s", username, password, host, port, dbname, timeout)
 
 	{ //对于初次运行，会创建一个初始数据库
 		db, err := sql.Open("mysql", lnk)
 		if err != nil {
 			panic(err)
 		}
-		_, err = db.Exec("CREATE DATABASE" + " " + Dbname)
+		_, err = db.Exec("CREATE DATABASE" + " " + dbname)
 		if err == nil {
 			fmt.Println("检测到尚未拥有数据库，已创建初始数据库")
 		}

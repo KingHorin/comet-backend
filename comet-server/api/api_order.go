@@ -67,6 +67,6 @@ func SubmitOrder() gin.HandlerFunc {
 
 func GetPayStatus() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.JSON(200, gin.H{"code": 0, "msg": "请求已接收，具体功能开发中"})
+		c.JSON(200, gin.H{"code": 1, "msg": "请求已接收，具体功能开发中"})
 	}
 }

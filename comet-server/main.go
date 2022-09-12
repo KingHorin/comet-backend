@@ -12,13 +12,13 @@ func main() {
 	userGroup := r.Group("/api/user")
 	userGroup.Use()
 	{
-		userGroup.POST("/login", api.LoginJSON())
-		userGroup.POST("/register", api.RegisterJSON())
+		userGroup.POST("/login", api.Login())
+		userGroup.POST("/register", api.Register())
 	}
 	userGroup.Use(middleware.JwtMiddleware())
 	{
-		userGroup.POST("/phone", api.UpdatePhoneJSON())
-		userGroup.POST("/email", api.UpdateEmailJSON())
+		userGroup.POST("/phone", api.UpdatePhone())
+		userGroup.POST("/email", api.UpdateEmail())
 	}
 	orderGroup := r.Group("/api/order").Use(middleware.JwtMiddleware())
 	{
